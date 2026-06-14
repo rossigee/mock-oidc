@@ -3,8 +3,8 @@ title: Home
 ---
 
 [![Build](https://github.com/rossigee/mock-oidc/actions/workflows/build.yaml/badge.svg)](https://github.com/rossigee/mock-oidc/actions/workflows/build.yaml)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/rossigee/mock-oidc)](https://github.com/rossigee/mock-oidc)
-[![Docker Image Size](https://img.shields.io/docker/image-size/rossigee/mock-oidc)](https://github.com/rossigee/mock-oidc/pkgs/container/mock-oidc)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/rossigee/mock-oidc?label=go)](https://github.com/rossigee/mock-oidc)
+[![Container](https://img.shields.io/badge/container-ghcr.io-blue)](https://github.com/rossigee/mock-oidc/pkgs/container/mock-oidc)
 [![License](https://img.shields.io/github/license/rossigee/mock-oidc)](LICENSE)
 
 A mock OIDC provider for E2E testing of OIDC-based applications without requiring a real identity provider. Provides full OpenID Connect protocol support with configurable users, scopes, and token claims.
