@@ -1,0 +1,25 @@
+baseURL: https://rossigee.github.io/mock-oidc/
+languageCode: en-us
+title: Mock OIDC
+
+sitemap:
+  changefreq: monthly
+  filename: sitemap.xml
+  priority: 0.5
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+
+params:
+  description: A mock OIDC provider for E2E testing of OIDC-based applications
+  author: rossigee
+
+outputs:
+  home:
+    - HTML
+    - JSON

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }} | {{ .Site.Title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-fg: #1a1a1a;
+      --color-muted: #666666;
+      --color-border: #e5e5e5;
+      --color-link: #0066cc;
+      --color-link-hover: #0052a3;
+      --color-code-bg: #f5f5f5;
+      --color-accent: #0066cc;
+      --color-success: #28a745;
+      --color-warning: #ffc107;
+      --color-error: #dc3545;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Fira Code', 'Consolas', 'Monaco', monospace;
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --max-width: 800px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--color-fg);
+      background: var(--color-bg);
+    }
+
+    a {
+      color: var(--color-link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: var(--color-link-hover);
+    }
+
+    header {
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--spacing-lg) var(--spacing-xl);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    header h1 a {
+      color: var(--color-fg);
+    }
+
+    header h1 a:hover {
+      color: var(--color-link);
+      text-decoration: none;
+    }
+
+    nav.breadcrumb {
+      padding: var(--spacing-sm) var(--spacing-xl);
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    nav.breadcrumb a {
+      color: var(--color-muted);
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xl);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: var(--spacing-xl);
+      margin-bottom: var(--spacing-md);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: var(--spacing-sm); }
+    h3 { font-size: 1.25rem; }
+
+    p {
+      margin-bottom: var(--spacing-md);
+    }
+
+    ul, ol {
+      margin-bottom: var(--spacing-md);
+      padding-left: var(--spacing-xl);
+    }
+
+    li {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      background: var(--color-code-bg);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+    }
+
+    pre {
+      background: var(--color-code-bg);
+      padding: var(--spacing-md);
+      border-radius: 6px;
+      overflow-x: auto;
+      margin-bottom: var(--spacing-md);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--color-accent);
+      padding-left: var(--spacing-md);
+      margin: var(--spacing-md) 0;
+      color: var(--color-muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--spacing-md);
+    }
+
+    th, td {
+      text-align: left;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    th {
+      font-weight: 600;
+      background: var(--color-code-bg);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: var(--spacing-xl) 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: var(--spacing-xl);
+      color: var(--color-muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--color-border);
+      margin-top: var(--spacing-xl);
+    }
+
+    .badges {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .badges img {
+      height: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: var(--spacing-sm);
+    }
+
+    nav ul li a {
+      display: block;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+    }
+
+    nav ul li a:hover {
+      border-color: var(--color-link);
+      background: var(--color-code-bg);
+      text-decoration: none;
+    }
+
+    .endpoint {
+      background: var(--color-code-bg);
+      padding: var(--spacing-md);
+      border-radius: 6px;
+      margin-bottom: var(--spacing-md);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      margin-right: var(--spacing-sm);
+    }
+
+    .method-get { background: #28a745; color: white; }
+    .method-post { background: #0066cc; color: white; }
+    .method-put { background: #ffc107; color: black; }
+    .method-delete { background: #dc3545; color: white; }
+
+    .error-code {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #dc3545;
+      color: white;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></h1>
+  </header>
+
+  {{ with .Ancestors }}
+  <nav class="breadcrumb">
+    {{ range . }}
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a> /
+    {{ end }}
+    {{ $.Title }}
+  </nav>
+  {{ end }}
+
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer>
+    <p>&copy; {{ now.Year }} {{ .Site.Params.author }}</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+name: Docs
+
+on:
+  push:
+    tags: ['v*.*.*']
+    paths:
+      - 'content/**'
+      - 'static/**'
+      - 'layouts/**'
+      - 'hugo.yaml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.139.5'
+          extended: true
+
+      - name: Build
+        run: hugo --minify --baseURL "https://rossigee.github.io/mock-oidc/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
