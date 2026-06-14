@@ -5,8 +5,6 @@ RUN go mod download
 
 COPY . .
 
-RUN ls -la && ls -la cmd/
-
 RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o app ./cmd/main
 
 FROM scratch
