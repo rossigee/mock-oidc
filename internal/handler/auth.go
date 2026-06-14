@@ -120,20 +120,24 @@ func (h *AuthHandler) Token(c *gin.Context) {
 
 	var userSub string
 
-	if req.GrantType == "authorization_code" {
+	switch req.GrantType {
+	case "authorization_code":
 		var ok bool
 		userSub, _, _, ok = h.store.ExchangeAuthCode(req.Code)
 		if !ok {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid_code"})
 			return
 		}
-	} else if req.GrantType == "password" {
+	case "password":
 		user, ok := h.store.GetUserByUsername(req.Username)
 		if !ok || user.Password != req.Password {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid_grant"})
 			return
 		}
 		userSub = user.Sub
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{"error": "unsupported_grant_type"})
+		return
 	}
 
 	user, _ := h.store.GetUserBySub(userSub)
