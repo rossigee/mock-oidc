@@ -24,9 +24,13 @@
       <input type="hidden" name="scope" value="{{ .scope }}">
       <input type="hidden" name="response_type" value="code">
 
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span style="display: inline-block; padding: 0.5rem 1rem; cursor: pointer;">Log in with Email</span>
+      </div>
+
       <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required autofocus>
+        <label for="login">Username:</label>
+        <input type="text" id="login" name="username" required autofocus>
       </div>
 
       <div class="form-group">
@@ -34,7 +38,7 @@
         <input type="password" id="password" name="password" required>
       </div>
 
-      <button type="submit">Sign In</button>
+      <button type="submit" id="submit-login">Sign In</button>
     </form>
   </div>
 </body>
