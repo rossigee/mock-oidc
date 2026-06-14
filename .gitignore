@@ -1,0 +1,31 @@
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.so.*
+*.dylib
+*.test
+*.out
+coverage.out
+coverage.html
+dist/
+bin/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+mock-oidc
+app
+main
+
+# Environment
+.env
+.env.local
+*.log

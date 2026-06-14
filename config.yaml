@@ -1,0 +1,26 @@
+clients:
+  - id: harbor
+    secret: harbor-secret
+    redirect_uris:
+      - https://harbor.golder.lan/c/oidc/callback
+      - http://localhost:8888/c/oidc/callback
+      - http://127.0.0.1:8888/c/oidc/callback
+
+users:
+  - sub: user-001
+    username: test1
+    password: password
+    name: Test User
+    email: test1@example.com
+    email_verified: true
+    groups: [devops]
+    is_admin: false
+
+  - sub: admin-001
+    username: admin
+    password: admin
+    name: Admin User
+    email: admin@example.com
+    email_verified: true
+    groups: [admins]
+    is_admin: true
