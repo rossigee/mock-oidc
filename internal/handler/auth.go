@@ -56,9 +56,13 @@ type TokenResponse struct {
 
 func (h *AuthHandler) Authorize(c *gin.Context) {
 	var req AuthorizationRequest
-	if err := c.ShouldBindQuery(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid_request"})
-		return
+
+	// Try to bind from form data first (POST), then fall back to query params (GET)
+	if err := c.ShouldBind(&req); err != nil {
+		if err := c.ShouldBindQuery(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid_request"})
+			return
+		}
 	}
 
 	// If username/password provided, validate and generate code
