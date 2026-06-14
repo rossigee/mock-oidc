@@ -9,6 +9,7 @@
 *.out
 coverage.out
 coverage.html
+coverage_analysis.txt
 dist/
 bin/
 
@@ -21,9 +22,13 @@ bin/
 .DS_Store
 
 # Build artifacts
-/mock-oidc
-/app
-./main
+mock-oidc
+app
+main
+
+# Hugo
+public/
+.hugo_build.lock
 
 # Environment
 .env
