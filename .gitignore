@@ -21,9 +21,9 @@ bin/
 .DS_Store
 
 # Build artifacts
-mock-oidc
-app
-main
+/mock-oidc
+/app
+./main
 
 # Environment
 .env
