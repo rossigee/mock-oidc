@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/rossigee/mock-oidc/internal/config"
 	"github.com/rossigee/mock-oidc/internal/crypto"
 	"github.com/rossigee/mock-oidc/internal/handler"
@@ -14,7 +15,6 @@ import (
 )
 
 func main() {
-	// Configure logging
 	logLevel := os.Getenv("LOG_LEVEL")
 	if logLevel == "" {
 		logLevel = "info"
@@ -36,7 +36,6 @@ func main() {
 		slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: level}),
 	))
 
-	// Load configuration
 	configFile := os.Getenv("OIDC_CONFIG_FILE")
 	if configFile == "" {
 		configFile = "./config.yaml"
@@ -49,66 +48,71 @@ func main() {
 	}
 	slog.Info("loaded configuration", slog.String("file", configFile))
 
-	// Determine issuer URL
 	issuer := os.Getenv("OIDC_ISSUER")
 	if issuer == "" {
 		issuer = "http://localhost:8080"
 	}
 	slog.Info("issuer URL", slog.String("issuer", issuer))
 
-	// Generate RSA key pair
 	keyMgr, err := crypto.NewKeyManager()
 	if err != nil {
 		slog.Error("failed to generate RSA keys", slog.Any("error", err))
 		os.Exit(1)
 	}
 
-	// Create store
-	dataStore := store.NewStore(cfg)
+	dataStore := store.NewStore(cfg, keyMgr, issuer)
 
-	// Configure Gin
+	adminKey := os.Getenv("ADMIN_API_KEY")
+	if adminKey == "" {
+		adminKey = uuid.New().String()
+		slog.Info("generated admin API key", slog.String("ADMIN_API_KEY", adminKey))
+	}
+
 	ginMode := os.Getenv("GIN_MODE")
 	if ginMode == "" {
 		ginMode = "release"
 	}
 	gin.SetMode(ginMode)
 
-	// Create router
 	router := gin.New()
-
-	// Load HTML templates
 	router.LoadHTMLGlob("templates/*")
-
-	// Apply middleware
 	router.Use(middleware.RequestID())
 	router.Use(middleware.StructuredLogging())
 	router.Use(gin.Recovery())
 	router.Use(middleware.CORSMiddleware())
 
-	// Health check endpoints
 	health := handler.NewHealthHandler()
 	router.GET("/health", health.Health)
 	router.GET("/ready", health.Ready)
 
-	// OIDC discovery endpoint
 	discoveryHandler := handler.NewOIDCDiscoveryHandler(issuer)
 	router.GET("/.well-known/openid-configuration", discoveryHandler.Discovery)
 
-	// OIDC endpoints
 	authHandler := handler.NewAuthHandler(dataStore, keyMgr, issuer)
 	router.GET("/authorize", authHandler.Authorize)
 	router.POST("/authorize", authHandler.Authorize)
 	router.POST("/token", authHandler.Token)
+	router.POST("/revoke", authHandler.Revoke)
 
-	// UserInfo endpoint
 	userInfoHandler := handler.NewUserInfoHandler(dataStore)
 	router.GET("/userinfo", userInfoHandler.GetUserInfo)
 
-	// JWKS endpoint
 	jwksHandler := handler.NewJWKSHandler(keyMgr)
 	router.GET("/.well-known/jwks.json", jwksHandler.JWKS)
 
-	// Start server
+	adminHandler := handler.NewAdminHandler(dataStore)
+	admin := router.Group("/admin", handler.AdminAuthMiddleware(adminKey))
+	{
+		admin.GET("/users", adminHandler.ListUsers)
+		admin.POST("/users", adminHandler.AddUser)
+		admin.DELETE("/users/:sub", adminHandler.DeleteUser)
+		admin.GET("/clients", adminHandler.ListClients)
+		admin.POST("/clients", adminHandler.AddClient)
+		admin.DELETE("/clients/:id", adminHandler.DeleteClient)
+		admin.POST("/reset", adminHandler.Reset)
+		admin.GET("/tokens", adminHandler.ListTokens)
+	}
+
 	port := os.Getenv("HTTP_PORT")
 	if port == "" {
 		port = "8080"

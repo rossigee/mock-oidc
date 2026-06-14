@@ -13,20 +13,20 @@ type Config struct {
 }
 
 type Client struct {
-	ID           string   `yaml:"id"`
-	Secret       string   `yaml:"secret"`
-	RedirectURIs []string `yaml:"redirect_uris"`
+	ID           string   `yaml:"id"            json:"id"`
+	Secret       string   `yaml:"secret"         json:"secret"`
+	RedirectURIs []string `yaml:"redirect_uris"  json:"redirect_uris"`
 }
 
 type User struct {
-	Sub            string   `yaml:"sub"`
-	Username       string   `yaml:"username"`
-	Password       string   `yaml:"password"`
-	Email          string   `yaml:"email"`
-	EmailVerified  bool     `yaml:"email_verified"`
-	Name           string   `yaml:"name"`
-	Groups         []string `yaml:"groups"`
-	IsAdmin        bool     `yaml:"is_admin"`
+	Sub           string   `yaml:"sub"            json:"sub"`
+	Username      string   `yaml:"username"       json:"username"`
+	Password      string   `yaml:"password"       json:"password,omitempty"`
+	Email         string   `yaml:"email"          json:"email"`
+	EmailVerified bool     `yaml:"email_verified" json:"email_verified"`
+	Name          string   `yaml:"name"           json:"name"`
+	Groups        []string `yaml:"groups"         json:"groups"`
+	IsAdmin       bool     `yaml:"is_admin"       json:"is_admin"`
 }
 
 func Load(filePath string) (*Config, error) {

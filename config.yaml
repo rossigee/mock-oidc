@@ -1,4 +1,10 @@
+# Mock OIDC Server Configuration
+# Define users and clients used by the server on startup.
+# You can also add users/clients at runtime via the admin API without restarting.
+
 clients:
+  # Example client: Harbor container registry
+  # redirect_uris must match exactly what the client sends to /authorize
   - id: harbor
     secret: harbor-secret
     redirect_uris:
@@ -7,15 +13,17 @@ clients:
       - http://127.0.0.1:8888/c/oidc/callback
 
 users:
-  - sub: user-001
-    username: test1
-    password: password
-    name: Test User
-    email: test1@example.com
-    email_verified: true
-    groups: [devops]
-    is_admin: false
+  # Test user: regular permissions
+  - sub: user-001                    # Subject identifier (unique per user)
+    username: test1                  # Username for login
+    password: password               # Password (plaintext in config — for testing only)
+    name: Test User                  # Display name (appears in tokens)
+    email: test1@example.com         # Email claim
+    email_verified: true             # Whether email is verified (appears in ID token)
+    groups: [devops]                 # Group membership (in tokens + userinfo)
+    is_admin: false                  # Admin flag (in tokens + userinfo)
 
+  # Admin user: full permissions
   - sub: admin-001
     username: admin
     password: admin
@@ -24,3 +32,30 @@ users:
     email_verified: true
     groups: [admins]
     is_admin: true
+
+# Note on Runtime Fixtures:
+# The admin API allows you to add/remove users and clients without restarting.
+# Useful for test suites that need scenario-specific data:
+#
+#   export ADMIN_KEY=$(ADMIN_API_KEY env var or auto-generated)
+#
+#   # Add a test user
+#   curl -X POST -H "Authorization: Bearer $ADMIN_KEY" \
+#     -H "Content-Type: application/json" \
+#     http://localhost:8080/admin/users \
+#     -d '{
+#       "sub": "test-scenario-1",
+#       "username": "scenario1",
+#       "password": "pass123",
+#       "name": "Test Scenario User",
+#       "email": "scenario1@test.local",
+#       "email_verified": true,
+#       "groups": ["testers"],
+#       "is_admin": false
+#     }'
+#
+#   # Reset state between test runs
+#   curl -X POST -H "Authorization: Bearer $ADMIN_KEY" \
+#     http://localhost:8080/admin/reset
+#
+# See README.md for more examples.

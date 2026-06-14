@@ -22,7 +22,10 @@
       <input type="hidden" name="redirect_uri" value="{{ .redirect_uri }}">
       <input type="hidden" name="state" value="{{ .state }}">
       <input type="hidden" name="scope" value="{{ .scope }}">
-      <input type="hidden" name="response_type" value="code">
+      <input type="hidden" name="response_type" value="{{ .response_type }}">
+      <input type="hidden" name="nonce" value="{{ .nonce }}">
+      <input type="hidden" name="code_challenge" value="{{ .code_challenge }}">
+      <input type="hidden" name="code_challenge_method" value="{{ .code_challenge_method }}">
 
       <div style="text-align: center; margin-bottom: 1.5rem;">
         <span style="display: inline-block; padding: 0.5rem 1rem; cursor: pointer;">Log in with Email</span>
