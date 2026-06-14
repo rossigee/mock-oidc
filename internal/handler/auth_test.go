@@ -133,7 +133,9 @@ func TestAuthorizationCodeFlow(t *testing.T) {
 	}
 
 	var resp TokenResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	if resp.AccessToken == "" || resp.IDToken == "" {
 		t.Fatal("response should contain access_token and id_token")
 	}
@@ -151,7 +153,9 @@ func TestAuthorizationCodeFlow(t *testing.T) {
 	}
 
 	var userInfo map[string]interface{}
-	json.NewDecoder(w.Body).Decode(&userInfo)
+	if err := json.NewDecoder(w.Body).Decode(&userInfo); err != nil {
+		t.Fatalf("failed to decode userinfo: %v", err)
+	}
 	if userInfo["sub"] != "user-123" {
 		t.Fatalf("expected sub=user-123, got %v", userInfo["sub"])
 	}
@@ -266,7 +270,9 @@ func TestPasswordGrant(t *testing.T) {
 	}
 
 	var resp TokenResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	if resp.AccessToken == "" || resp.IDToken == "" || resp.RefreshToken == "" {
 		t.Fatal("should return access_token, id_token, refresh_token")
 	}
@@ -289,7 +295,9 @@ func TestRefreshTokenGrant(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	var resp TokenResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	refreshToken := resp.RefreshToken
 
 	// Use refresh token to get new tokens
@@ -308,7 +316,9 @@ func TestRefreshTokenGrant(t *testing.T) {
 	}
 
 	var newResp TokenResponse
-	json.NewDecoder(w.Body).Decode(&newResp)
+	if err := json.NewDecoder(w.Body).Decode(&newResp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	if newResp.AccessToken == "" {
 		t.Fatal("should return new access token")
 	}
@@ -346,7 +356,9 @@ func TestTokenRevocation(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	var resp TokenResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	accessToken := resp.AccessToken
 
 	// Use it at /userinfo (should work)
@@ -437,7 +449,9 @@ func TestAdminAPI_Reset(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	var resp TokenResponse
-	json.NewDecoder(w.Body).Decode(&resp)
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	token := resp.AccessToken
 
 	// Token should work
