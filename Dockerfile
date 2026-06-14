@@ -10,6 +10,7 @@ RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o app ./cmd/main
 FROM scratch
 COPY --from=builder /build/app /app
 COPY --from=builder /build/templates/ /templates/
+COPY --from=builder /build/config.yaml /config.yaml
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 EXPOSE 8080
 ENTRYPOINT ["/app"]
