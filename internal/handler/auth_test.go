@@ -96,12 +96,12 @@ func TestAuthorizationCodeFlow(t *testing.T) {
 
 	// Step 2: POST /authorize with credentials
 	formData := url.Values{
-		"client_id":    {"test-client"},
-		"redirect_uri": {"http://localhost:9999/callback"},
+		"client_id":     {"test-client"},
+		"redirect_uri":  {"http://localhost:9999/callback"},
 		"response_type": {"code"},
-		"state":        {"xyz"},
-		"username":     {"testuser"},
-		"password":     {"testpass"},
+		"state":         {"xyz"},
+		"username":      {"testuser"},
+		"password":      {"testpass"},
 	}
 	req = httptest.NewRequest("POST", "/authorize", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -473,11 +473,11 @@ func TestBasicAuth_TokenEndpoint(t *testing.T) {
 
 	// Get auth code first
 	formData := url.Values{
-		"client_id":    {"test-client"},
-		"redirect_uri": {"http://localhost:9999/callback"},
+		"client_id":     {"test-client"},
+		"redirect_uri":  {"http://localhost:9999/callback"},
 		"response_type": {"code"},
-		"username":     {"testuser"},
-		"password":     {"testpass"},
+		"username":      {"testuser"},
+		"password":      {"testpass"},
 	}
 	req := httptest.NewRequest("POST", "/authorize", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
